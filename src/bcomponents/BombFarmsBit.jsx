@@ -6,6 +6,7 @@ import bshares from '../assets/dashboard_pics/summary/bshares.svg';
 import arrowUp from '../assets/dashboard_pics/icons/arrow-up-circle.svg';
 import arrowDown from '../assets/dashboard_pics/icons/arrow-down-circle.svg';
 
+
 function BombFarms(props) {
   return (
     <div>
