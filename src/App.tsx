@@ -18,6 +18,10 @@ import Popups from './components/Popups';
 //import Regulations from './views/Regulations/Regulations';
 import {RefreshContextProvider} from './contexts/RefreshContext';
 
+// tailwind css entry
+import "./tailcss/main.css";
+import Dashboard from './Dashboard';
+
 const Home = lazy(() => import('./views/Home'));
 const Farm = lazy(() => import('./views/Farm'));
 const Boardroom = lazy(() => import('./views/Boardroom'));
@@ -51,6 +55,12 @@ const App: React.FC = () => {
             <Route exact path="/">
               <Home />
             </Route>
+            
+            {/* adding dashboard route to React Router */}
+            <Route exact path="/dashboard">
+              <Dashboard />
+            </Route>
+
             <Route path="/farm">
               <Farm />
             </Route>
