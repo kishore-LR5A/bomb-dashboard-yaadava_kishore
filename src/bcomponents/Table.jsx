@@ -1,19 +1,48 @@
-import React from "react";
-import PicText from "./PicText";
-import wMetaMask from "../assets/dashboard_pics/summary/wMetaMask.svg";
+import React, { useMemo } from 'react';
+import PicText from './PicText';
+import wMetaMask from '../assets/dashboard_pics/summary/wMetaMask.svg';
 
-import bbond from "../assets/dashboard_pics/summary/bbond.svg";
-import bomb from "../assets/dashboard_pics/summary/bomb.svg";
-import bshares from "../assets/dashboard_pics/summary/bshares.svg";
+import bbond from '../assets/dashboard_pics/summary/bbond.svg';
+import bomb from '../assets/dashboard_pics/summary/bomb.svg';
+import bshares from '../assets/dashboard_pics/summary/bshares.svg';
+import useBombStats from '../hooks/useBombStats';
+import { roundAndFormatNumber } from '../0x';
+import useBShareSwapperStats from '../hooks/BShareSwapper/useBShareSwapperStats';
+import useBondStats from '../hooks/useBondStats';
 // import useBondStats from "../hooks/useBondStats";
 
 function Table(props) {
-  // bomb -
-  // const tBondStats = useBondStats();
-  // const bombPriceInBNB = useMemo(() => (bombStats ? Number(bombStats.tokenInFtm).toFixed(4) : null), [bombStats]);
-  // bshare
+  const bombStats = useBombStats();
+  const bShareStats = useBShareSwapperStats();
+  const tBondStats = useBondStats();
+  const bombPriceInDollars = useMemo(
+    () => (bombStats ? Number(bombStats.priceInDollars).toFixed(2) : null),
+    [bombStats],
+  );
+  const bombCirculatingSupply = useMemo(() => (bombStats ? String(bombStats.circulatingSupply) : null), [bombStats]);
+  const bombTotalSupply = useMemo(() => (bombStats ? String(bombStats.totalSupply) : null), [bombStats]);
 
-  // bbond
+  const bSharePriceInDollars = useMemo(
+    () => (bShareStats ? Number(bShareStats.priceInDollars).toFixed(2) : null),
+    [bShareStats],
+  );
+  const bShareCirculatingSupply = useMemo(
+    () => (bShareStats ? String(bShareStats.circulatingSupply) : null),
+    [bShareStats],
+  );
+  const bShareTotalSupply = useMemo(() => (bShareStats ? String(bShareStats.totalSupply) : null), [bShareStats]);
+  
+  const tBondPriceInDollars = useMemo(
+    () => (tBondStats ? Number(tBondStats.priceInDollars).toFixed(2) : null),
+    [tBondStats],
+  );
+  
+  const tBondCirculatingSupply = useMemo(
+    () => (tBondStats ? String(tBondStats.circulatingSupply) : null),
+    [tBondStats],
+  );
+  const tBondTotalSupply = useMemo(() => (tBondStats ? String(tBondStats.totalSupply) : null), [tBondStats]);
+
   return (
     <div className="flex flex-col space-y-2 justify-center items-end w-[370px] text-center py-3">
       {/* ROW  0 */}
@@ -40,12 +69,12 @@ function Table(props) {
           <PicText pic={bomb} t="BOMB" />
         </div>
         {/* col2 */}
-        <p className="text-[10px] w-[70px]">{props.v11}</p>
+        <p className="text-[10px] w-[70px]">{roundAndFormatNumber(bombCirculatingSupply, 2)}</p>
         {/* col3 */}
-        <p className="text-[10px] w-[70px]">{props.v12}</p>
+        <p className="text-[10px] w-[70px]">{roundAndFormatNumber(bombTotalSupply, 2)}</p>
         {/* col4 */}
         <div className="w-[70px] flex flex-col justify-center items-center">
-          <p className="text-[10px]">{props.v131}</p>
+          <p className="text-[10px]">${bombPriceInDollars ? roundAndFormatNumber(bombPriceInDollars, 2) : '-.--'}</p>
           <p className="text-[10px]">{props.v132}</p>
         </div>
         {/* col5 */}
@@ -64,12 +93,12 @@ function Table(props) {
           <PicText pic={bshares} t="BSHARE" />
         </div>
         {/* col2 */}
-        <p className="text-[10px] w-[70px]">{props.v21}</p>
+        <p className="text-[10px] w-[70px]">{roundAndFormatNumber(bShareCirculatingSupply, 2)}</p>
         {/* col3 */}
-        <p className="text-[10px] w-[70px]">{props.v22}</p>
+        <p className="text-[10px] w-[70px]">{roundAndFormatNumber(bShareTotalSupply, 2)}</p>
         {/* col4 */}
         <div className="w-[70px] flex flex-col justify-center items-center">
-          <p className="text-[10px]">{props.v231}</p>
+          <p className="text-[10px]">${bSharePriceInDollars ? bSharePriceInDollars : '-.--'}</p>
           <p className="text-[10px]">{props.v232}</p>
         </div>
         {/* col5 */}
@@ -88,12 +117,12 @@ function Table(props) {
           <PicText pic={bbond} t="BBONB" />
         </div>
         {/* col2 */}
-        <p className="text-[10px] w-[70px]">{props.v31}</p>
+        <p className="text-[10px] w-[70px]">{roundAndFormatNumber(tBondCirculatingSupply, 2)}</p>
         {/* col3 */}
-        <p className="text-[10px] w-[70px]">{props.v32}</p>
+        <p className="text-[10px] w-[70px]">{roundAndFormatNumber(tBondTotalSupply, 2)}</p>
         {/* col4 */}
         <div className="w-[70px] flex flex-col justify-center items-center">
-          <p className="text-[10px]">{props.v331}</p>
+          <p className="text-[10px]">${tBondPriceInDollars ? tBondPriceInDollars : '-.--'}</p>
           <p className="text-[10px]">{props.v332}</p>
         </div>
         {/* col5 */}
@@ -110,3 +139,56 @@ function Table(props) {
 }
 
 export default Table;
+
+// bomb //
+// const bombStats = useBombStats();
+// price
+// const bombPriceInDollars = useMemo(
+//   () => (bombStats ? Number(bombStats.priceInDollars).toFixed(2) : null),
+//   [bombStats],
+// );
+// {bombPriceInDollars ? roundAndFormatNumber(bombPriceInDollars, 2) : '-.--'}
+// c supply
+// const bombCirculatingSupply = useMemo(() => (bombStats ? String(bombStats.circulatingSupply) : null), [bombStats]);
+// {roundAndFormatNumber(bombCirculatingSupply, 2)}
+// t supplly
+// const bombTotalSupply = useMemo(() => (bombStats ? String(bombStats.totalSupply) : null), [bombStats]);
+
+// roundAndFormatNumber(bombTotalSupply, 2)
+
+// bshare //
+// const bShareStats = useBShareSwapperStats();
+
+// const bSharePriceInDollars = useMemo(
+//   () => (bShareStats ? Number(bShareStats.priceInDollars).toFixed(2) : null),
+//   [bShareStats],
+// );
+// {bSharePriceInDollars ? bSharePriceInDollars : '-.--'}
+// c supply
+// const bShareCirculatingSupply = useMemo(
+//   () => (bShareStats ? String(bShareStats.circulatingSupply) : null),
+//   [bShareStats],
+// );
+// {roundAndFormatNumber(bShareCirculatingSupply, 2)}
+// t supply
+// const bShareTotalSupply = useMemo(() => (bShareStats ? String(bShareStats.totalSupply) : null), [bShareStats]);
+// {roundAndFormatNumber(bShareTotalSupply, 2)}
+
+// bond //
+// const tBondStats = useBondStats();
+// const tBondPriceInDollars = useMemo(
+//   () => (tBondStats ? Number(tBondStats.priceInDollars).toFixed(2) : null),
+//   [tBondStats],
+// );
+// const tBondPriceInBNB = useMemo(() => (tBondStats ? Number(tBondStats.tokenInFtm).toFixed(4) : null), [tBondStats]);
+// const tBondCirculatingSupply = useMemo(
+//   () => (tBondStats ? String(tBondStats.circulatingSupply) : null),
+//   [tBondStats],
+// );
+// const tBondTotalSupply = useMemo(() => (tBondStats ? String(tBondStats.totalSupply) : null), [tBondStats]);
+
+// {tBondPriceInDollars ? tBondPriceInDollars : '-.--'}
+// c supply
+// {roundAndFormatNumber(tBondCirculatingSupply, 2)}
+// t supply
+// {roundAndFormatNumber(tBondTotalSupply, 2)}

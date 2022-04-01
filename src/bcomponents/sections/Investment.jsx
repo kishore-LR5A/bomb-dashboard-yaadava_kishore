@@ -10,7 +10,7 @@ function Investment() {
       <div className="flex flex-col space-y-2">
         {/* link */}
         <div className="flex justify-end">
-          <a href="/">
+          <a href="https://docs.bomb.money/welcome-start-here/strategies">
             <img src={investmentStategy} alt="img" />
           </a>
         </div>
@@ -23,14 +23,14 @@ function Investment() {
             <div className="rounded-full bg-white w-[30px] h-[30px] flex items-center justify-center">
               <img className="w-[28px] h-[28px] " src={discord} alt="" />
             </div>
-            <p className="text-[18px] font-bold">Chat on Discord</p>
+            <a href='https://discord.bomb.money/' className="text-[18px] font-bold">Chat on Discord</a>
           </div>
           {/* read docs */}
           <div className="flex space-x-1 w-[317px] h-[40px] items-center justify-center bg-gray-400 border-[0.3px] border-[#728CDF]">
             <div className="rounded-full bg-white w-[30px] h-[30px] flex items-center justify-center">
               <img className="w-[23px] h-[23px] " src={docs} alt="" />
             </div>
-            <p className="text-[18px] font-bold">Read Docs</p>
+            <a href='https://docs.bomb.money/' className="text-[18px] font-bold">Read Docs</a>
           </div>
         </div>
         {/* BoardRoom */}
