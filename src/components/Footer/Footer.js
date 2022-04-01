@@ -39,8 +39,8 @@ const Footer = () => {
   const classes = useStyles();
   return (
     <footer className={classes.footer}>
-      <Container maxWidth="lg">
-        <Grid container>
+      <Container maxWidth="lg" >
+        <Grid container className='flex justify-between items-center '>
           <Grid item xs={6}>
             <Typography variant="body2" color="textPrimary" align="left">
               {'Copyright © '}
@@ -50,7 +50,7 @@ const Footer = () => {
               {new Date().getFullYear()}
             </Typography>
           </Grid>
-          <Grid item xs={6} style={{textAlign: 'right', height: '20px'}}>
+          <Grid item xs={6} style={{textAlign: 'right', height: '20px'}} className="flex ">
             <a
               href="https://twitter.com/BombMoneyBSC"
               rel="noopener noreferrer"

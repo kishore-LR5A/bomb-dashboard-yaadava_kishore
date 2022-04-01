@@ -51,7 +51,7 @@ function Dashboard() {
         </Helmet>
         <BackgroundImage />
         <div>
-          <div className='bg-[url("/background.jpg")] min-h-screen flex flex-col justify-start items-center text-white'>
+          <div className='bg-[url("/background.jpg")] flex flex-col justify-start items-center text-white'>
             {/* section 1: Bomb Finance Summary */}
             <div className="mx-auto my-5 flex flex-col bg-[#202543] bg-opacity-50 space-y-1 w-[1048px] h-[295px] justify-start items-center rounded-md">
               <div className="text-2xl mt-2 text-white">Bomb Finance Summary</div>

@@ -601,8 +601,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 330px;
 }
 
-.min-h-screen {
-  min-height: 100vh;
+.h-\[46px\] {
+  height: 46px;
 }
 
 .w-\[1048px\] {
@@ -735,6 +735,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .w-\[382px\] {
   width: 382px;
+}
+
+.w-\[90px\] {
+  width: 90px;
 }
 
 .transform {
@@ -971,6 +975,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .pt-\[10px\] {
   padding-top: 10px;
+}
+
+.pt-\[7px\] {
+  padding-top: 7px;
 }
 
 .pt-2 {
