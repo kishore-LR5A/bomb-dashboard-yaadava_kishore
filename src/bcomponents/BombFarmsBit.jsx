@@ -1,13 +1,55 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import TextImage from './TextImage';
-
+import bomb from '../assets/dashboard_pics/summary/bomb.svg';
 import bombbitLP from '../assets/dashboard_pics/pictextnum/bomb-bitcoin-LP.svg';
 import bshares from '../assets/dashboard_pics/summary/bshares.svg';
 import arrowUp from '../assets/dashboard_pics/icons/arrow-up-circle.svg';
 import arrowDown from '../assets/dashboard_pics/icons/arrow-down-circle.svg';
-
+import useTotalStakedOnBoardroom from '../hooks/useTotalStakedOnBoardroom';
+import { getDisplayBalance } from '../utils/formatBalance';
+import useBank from '../hooks/useBank';
+import useStatsForPool from '../hooks/useStatsForPool';
+import useEarnings from '../hooks/useEarnings';
+import useBombStats from '../hooks/useBombStats';
+import useShareStats from '../hooks/usebShareStats';
+import useTokenBalance from '../hooks/useTokenBalance';
+import useStakedBalance from '../hooks/useStakedBalance';
+import useStakedTokenPriceInDollars from '../hooks/useStakedTokenPriceInDollars';
+// import bombbitLP from './assets/dashboard_pics/pictextnum/bomb-bitcoin-LP.svg';
+// import bsharebnbLP from './assets/dashboard_pics/pictextnum/bshare-bnb-LP.svg';
 
 function BombFarms(props) {
+  const bankContract = 'BombBtcbLPBShareRewardPool'; // for BOMB-BTCB
+  const bank = useBank(bankContract);
+
+  const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
+  const bombStats = useBombStats();
+  const tShareStats = useShareStats();
+
+  const tokenName = bank.earnTokenName === 'BSHARE' ? 'BSHARE' : 'BOMB';
+  const tokenStats = bank.earnTokenName === 'BSHARE' ? tShareStats : bombStats;
+  const tokenPriceInDollars = useMemo(
+    () => (tokenStats ? Number(tokenStats.priceInDollars).toFixed(2) : null),
+    [tokenStats],
+  );
+
+  const earnedInDollars = (Number(tokenPriceInDollars) * Number(getDisplayBalance(earnings))).toFixed(2);
+  // const { account } = useWallet();
+  // const { onRedeem } = useRedeem(bank);
+  const statsOnPool = useStatsForPool(bank);
+
+  const totalStaked = useTotalStakedOnBoardroom();
+
+  const tokenBalance = useTokenBalance(bank.depositToken);
+  const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
+  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars(bank.depositTokenName, bank.depositToken);
+  const tokenPriceInDollarsStake = useMemo(
+    () => (stakedTokenPriceInDollars ? stakedTokenPriceInDollars : null),
+    [stakedTokenPriceInDollars],
+  );
+  const earnedInDollarsStake = (
+    Number(tokenPriceInDollarsStake) * Number(getDisplayBalance(stakedBalance, bank.depositToken.decimal))
+  ).toFixed(2);
   return (
     <div>
       {/* upper */}
@@ -22,7 +64,7 @@ function BombFarms(props) {
                 <div className="bg-[#00E8A2] bg-opacity-50 rounded-md px-2">Recommended</div>
               </div>
               <p className="flex items-end">
-                TVL: <span className="text-[16px] font-semibold ">$1,008,430</span>
+                TVL: <span className="text-[16px] font-semibold ">${statsOnPool?.TVL}</span>
               </p>
             </div>
             {/* horizontal line */}
@@ -37,25 +79,25 @@ function BombFarms(props) {
         <div className="flex space-x-20 pt-2">
           <div className="flex flex-col space-y-1">
             <p>Daily Returns:</p>
-            <p>2%</p>
+            <p>{bank.closedForStaking ? '0.00' : statsOnPool?.dailyAPR}%</p>
           </div>
           {/* stake */}
           <div className="flex flex-col space-y-1">
             <p>Your Stake</p>
             <div className="flex space-x-1">
-              <img src="pictextnum/bomb-bitcoin-LP.svg" alt="" />
-              <p>124.21</p>
+              <img src={bombbitLP} alt="" />
+              <p>{getDisplayBalance(stakedBalance, bank.depositToken.decimal)}</p>
             </div>
-            <p>≈ $1171.62</p>
+            <p>≈ ${earnedInDollarsStake}</p>
           </div>
           {/* earned */}
           <div className="flex flex-col space-y-1">
             <p>Earned</p>
             <div className="flex space-x-1">
-              <img src="summary/bshares.svg" alt="" />
-              <p> 6.4413 </p>
+              <img src={bshares} alt="" />
+              <p> {getDisplayBalance(earnings)} </p>
             </div>
-            <p>≈ $298.88</p>
+            <p>≈ ${earnedInDollars}</p>
           </div>
         </div>
         {/* right */}

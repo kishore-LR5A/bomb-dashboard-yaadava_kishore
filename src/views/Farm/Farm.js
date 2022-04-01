@@ -33,6 +33,7 @@ const Farm = () => {
   const { path } = useRouteMatch();
   const { account } = useWallet();
   const activeBanks = banks.filter((bank) => !bank.finished);
+  // console.log(activeBanks)
   return (
     <Switch>
       <Page>

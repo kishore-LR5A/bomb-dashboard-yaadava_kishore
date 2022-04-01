@@ -25,7 +25,7 @@ import useTotalValueLocked from './hooks/useTotalValueLocked';
 import useCurrentEpoch from './hooks/useCurrentEpoch';
 import ProgressCountdown from './views/Boardroom/components/ProgressCountdown';
 import useTreasuryAllocationTimes from './hooks/useTreasuryAllocationTimes';
-import CountUp from 'react-countup';
+// import CountUp from 'react-countup';
 import useCashPriceInEstimatedTWAP from './hooks/useCashPriceInEstimatedTWAP';
 
 const BackgroundImage = createGlobalStyle`

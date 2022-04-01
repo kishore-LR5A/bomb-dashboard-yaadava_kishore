@@ -5,6 +5,7 @@ import {Box, Button, Card, CardActions, CardContent, Typography, Grid} from '@ma
 import TokenSymbol from '../../components/TokenSymbol';
 
 const FarmCard = ({bank}) => {
+  console.log(bank)
   return (
     <Grid item xs={12} md={4} lg={4}>
       <Card variant="outlined">
