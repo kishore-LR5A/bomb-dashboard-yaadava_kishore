@@ -11,19 +11,22 @@ import useStatsForPool from '../hooks/useStatsForPool';
 import useEarnings from '../hooks/useEarnings';
 import useBombStats from '../hooks/useBombStats';
 import useShareStats from '../hooks/usebShareStats';
-import useTokenBalance from '../hooks/useTokenBalance';
+// import useTokenBalance from '../hooks/useTokenBalance';
 import useStakedBalance from '../hooks/useStakedBalance';
 import useStakedTokenPriceInDollars from '../hooks/useStakedTokenPriceInDollars';
+import useHarvest from '../hooks/useHarvest';
+import useRedeem from '../hooks/useRedeem';
 
 function BoardRoom() {
   const bankContract = 'BombBshareLPBShareRewardPool'; // for BOMB-BSHARE
   const bank = useBank(bankContract);
-
+  const { onReward } = useHarvest(bank); //claim
+  const { onRedeem } = useRedeem(bank); //withdraw
   const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
   const bombStats = useBombStats();
   const tShareStats = useShareStats();
 
-  const tokenName = bank.earnTokenName === 'BSHARE' ? 'BSHARE' : 'BOMB';
+  // const tokenName = bank.earnTokenName === 'BSHARE' ? 'BSHARE' : 'BOMB';
   const tokenStats = bank.earnTokenName === 'BSHARE' ? tShareStats : bombStats;
   const tokenPriceInDollars = useMemo(
     () => (tokenStats ? Number(tokenStats.priceInDollars).toFixed(2) : null),
@@ -37,7 +40,7 @@ function BoardRoom() {
 
   const totalStaked = useTotalStakedOnBoardroom();
 
-  const tokenBalance = useTokenBalance(bank.depositToken);
+  // const tokenBalance = useTokenBalance(bank.depositToken);
   const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
   const stakedTokenPriceInDollars = useStakedTokenPriceInDollars(bank.depositTokenName, bank.depositToken);
   const tokenPriceInDollarsStake = useMemo(
@@ -48,7 +51,7 @@ function BoardRoom() {
     Number(tokenPriceInDollarsStake) * Number(getDisplayBalance(stakedBalance, bank.depositToken.decimal))
   ).toFixed(2);
   return (
-    <div className="w-[646px] h-[202px]  bg-[#202543] bg-opacity-50 rounded-md pl-[16px]">
+    <div className="w-[646px] h-[212px]  bg-[#202543] bg-opacity-50 rounded-md pl-[16px]">
       {/* upper */}
       {/* mx-auto flex flex-col bg-[#202543] bg-opacity-50 space-y-1 justify-center items-start rounded-md py-[10px] */}
       <div className="flex pt-[20px]">
@@ -112,13 +115,21 @@ function BoardRoom() {
         <div className="flex flex-col space-y-2 items-center justify-center w-[230px] ">
           {/* 3 same elements should be made as a component */}
           <div className="flex space-x-2">
-            <TextImage pic={arrowUp} t="Deposit" />
-            <TextImage pic={arrowDown} t="Withdraw" />
+            <button onClick={() => onRedeem}>
+              <TextImage pic={arrowUp} t="Deposit" />
+            </button>
+            <button onClick={onRedeem}>
+              <TextImage pic={arrowDown} t="Withdraw" />
+            </button>
           </div>
-          <div className="border border-white rounded-full flex items-center justify-center space-x-2 px-3 w-[217px]">
+          <button
+            onClick={onReward}
+            disabled={earnings.eq(0)}
+            className="border border-white rounded-full flex items-center justify-center space-x-2 px-3 w-[217px] disabled:opacity-70"
+          >
             <p>Claim Rewards</p>
             <img className="w-[18px] h-[18px] " src={bshares} alt="img" />
-          </div>
+          </button>
         </div>
       </div>
     </div>

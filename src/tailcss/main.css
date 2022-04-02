@@ -497,6 +497,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 0.5rem;
 }
 
+.mt-5 {
+  margin-top: 1.25rem;
+}
+
 .block {
   display: block;
 }
@@ -541,8 +545,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 40%;
 }
 
-.h-\[202px\] {
-  height: 202px;
+.h-\[212px\] {
+  height: 212px;
 }
 
 .h-\[33px\] {
@@ -569,8 +573,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 40px;
 }
 
-.h-\[380px\] {
-  height: 380px;
+.h-\[400px\] {
+  height: 400px;
 }
 
 .h-\[186px\] {
@@ -597,12 +601,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   height: 23px;
 }
 
-.h-\[330px\] {
-  height: 330px;
-}
-
-.h-\[46px\] {
-  height: 46px;
+.h-\[340px\] {
+  height: 340px;
 }
 
 .w-\[1048px\] {
@@ -737,8 +737,8 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 382px;
 }
 
-.w-\[90px\] {
-  width: 90px;
+.w-\[100px\] {
+  width: 100px;
 }
 
 .transform {
@@ -1084,4 +1084,8 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.disabled\:opacity-70:disabled {
+  opacity: 0.7;
 }

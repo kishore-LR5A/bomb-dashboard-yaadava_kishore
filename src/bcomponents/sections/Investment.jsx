@@ -37,7 +37,7 @@ function Investment() {
         <BoardRoom />
       </div>
       {/* left */}
-      <div className="mx-auto flex bg-[#202543] bg-opacity-50 space-x-2 w-[382px] h-[330px] justify-start items-start rounded-md">
+      <div className="mx-auto flex bg-[#202543] bg-opacity-50 space-x-2 w-[382px] h-[340px] justify-start items-start rounded-md">
         <p className="text-[22px] pl-[19px] pt-[8px]">Latest News</p>
       </div>
     </div>
