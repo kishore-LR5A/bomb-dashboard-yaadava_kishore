@@ -19,11 +19,47 @@ import useHarvest from '../hooks/useHarvest';
 import useRedeem from '../hooks/useRedeem';
 // import bombbitLP from './assets/dashboard_pics/pictextnum/bomb-bitcoin-LP.svg';
 // import bsharebnbLP from './assets/dashboard_pics/pictextnum/bshare-bnb-LP.svg';
-
+import useModal from '../hooks/useModal';
+import useStake from '../hooks/useStake';
+import DepositModal from '../views/Bank/components/DepositModal';
+import useTokenBalance from '../hooks/useTokenBalance';
+import WithdrawModal from '../views/Bank/components/WithdrawModal';
+import useWithdraw from '../hooks/useWithdraw';
 function BombFarmsComponent(props) {
   // const bankContract = 'BombBtcbLPBShareRewardPool'; // for BOMB-BTCB
   const bankContract = props.bankContract;
   const bank = useBank(bankContract);
+
+  // deposit
+  const { onStake } = useStake(bank);
+  const tokenBalance = useTokenBalance(bank.depositToken);
+  const [onPresentDeposit, onDismissDeposit] = useModal(
+    <DepositModal
+      max={tokenBalance}
+      decimals={bank.depositToken.decimal}
+      onConfirm={(amount) => {
+        if (Number(amount) <= 0 || isNaN(Number(amount))) return;
+        onStake(amount);
+        onDismissDeposit();
+      }}
+      tokenName={bank.depositTokenName}
+    />,
+  );
+  // withdraw
+  const { onWithdraw } = useWithdraw(bank);
+  const [onPresentWithdraw, onDismissWithdraw] = useModal(
+    <WithdrawModal
+      max={stakedBalance}
+      decimals={bank.depositToken.decimal}
+      onConfirm={(amount) => {
+        if (Number(amount) <= 0 || isNaN(Number(amount))) return;
+        onWithdraw(amount);
+        onDismissWithdraw();
+      }}
+      tokenName={bank.depositTokenName}
+    />,
+  );
+
   const { onReward } = useHarvest(bank); //claim
   const { onRedeem } = useRedeem(bank); //withdraw
 
@@ -109,8 +145,11 @@ function BombFarmsComponent(props) {
         <div className="flex items-end justify-center">
           {/* 3 same elements should be made as a component */}
           <div className="flex space-x-2">
-            <TextImage pic={arrowUp} t="Deposit" />
-            <button onClick={onRedeem}>
+            <button onClick={() => (bank.closedForStaking ? null : onPresentDeposit())}>
+              <TextImage pic={arrowUp} t="Deposit" />
+            </button>
+            {/* <button onClick={onRedeem}> */}
+            <button onClick={onPresentWithdraw}>
               <TextImage pic={arrowDown} t="Withdraw" />
             </button>
             <button onClick={onReward} disabled={earnings.eq(0)} className="disabled:opacity-70">

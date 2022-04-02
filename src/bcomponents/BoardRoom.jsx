@@ -16,10 +16,47 @@ import useStakedBalance from '../hooks/useStakedBalance';
 import useStakedTokenPriceInDollars from '../hooks/useStakedTokenPriceInDollars';
 import useHarvest from '../hooks/useHarvest';
 import useRedeem from '../hooks/useRedeem';
+import useModal from '../hooks/useModal';
+import useStake from '../hooks/useStake';
+import DepositModal from '../views/Bank/components/DepositModal';
+import useTokenBalance from '../hooks/useTokenBalance';
+import WithdrawModal from '../views/Bank/components/WithdrawModal';
+import useWithdraw from '../hooks/useWithdraw';
 
 function BoardRoom() {
   const bankContract = 'BombBshareLPBShareRewardPool'; // for BOMB-BSHARE
   const bank = useBank(bankContract);
+  const tokenBalance = useTokenBalance(bank.depositToken);
+  const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
+
+  // deposit
+  const { onStake } = useStake(bank);
+  const [onPresentDeposit, onDismissDeposit] = useModal(
+    <DepositModal
+      max={tokenBalance}
+      decimals={bank.depositToken.decimal}
+      onConfirm={(amount) => {
+        if (Number(amount) <= 0 || isNaN(Number(amount))) return;
+        onStake(amount);
+        onDismissDeposit();
+      }}
+      tokenName={bank.depositTokenName}
+    />,
+  );
+  // withdraw
+  const { onWithdraw } = useWithdraw(bank);
+  const [onPresentWithdraw, onDismissWithdraw] = useModal(
+    <WithdrawModal
+      max={stakedBalance}
+      decimals={bank.depositToken.decimal}
+      onConfirm={(amount) => {
+        if (Number(amount) <= 0 || isNaN(Number(amount))) return;
+        onWithdraw(amount);
+        onDismissWithdraw();
+      }}
+      tokenName={bank.depositTokenName}
+    />,
+  );
   const { onReward } = useHarvest(bank); //claim
   const { onRedeem } = useRedeem(bank); //withdraw
   const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
@@ -41,7 +78,6 @@ function BoardRoom() {
   const totalStaked = useTotalStakedOnBoardroom();
 
   // const tokenBalance = useTokenBalance(bank.depositToken);
-  const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
   const stakedTokenPriceInDollars = useStakedTokenPriceInDollars(bank.depositTokenName, bank.depositToken);
   const tokenPriceInDollarsStake = useMemo(
     () => (stakedTokenPriceInDollars ? stakedTokenPriceInDollars : null),
@@ -115,10 +151,11 @@ function BoardRoom() {
         <div className="flex flex-col space-y-2 items-center justify-center w-[230px] ">
           {/* 3 same elements should be made as a component */}
           <div className="flex space-x-2">
-            <button onClick={() => onRedeem}>
+            <button onClick={() => (bank.closedForStaking ? null : onPresentDeposit())}>
               <TextImage pic={arrowUp} t="Deposit" />
             </button>
-            <button onClick={onRedeem}>
+            {/* <button onClick={onRedeem}> */}
+            <button onClick={onPresentWithdraw}>
               <TextImage pic={arrowDown} t="Withdraw" />
             </button>
           </div>
