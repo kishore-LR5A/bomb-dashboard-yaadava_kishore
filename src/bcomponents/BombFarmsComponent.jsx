@@ -16,7 +16,7 @@ import useShareStats from '../hooks/usebShareStats';
 import useStakedBalance from '../hooks/useStakedBalance';
 import useStakedTokenPriceInDollars from '../hooks/useStakedTokenPriceInDollars';
 import useHarvest from '../hooks/useHarvest';
-import useRedeem from '../hooks/useRedeem';
+// import useRedeem from '../hooks/useRedeem';
 // import bombbitLP from './assets/dashboard_pics/pictextnum/bomb-bitcoin-LP.svg';
 // import bsharebnbLP from './assets/dashboard_pics/pictextnum/bshare-bnb-LP.svg';
 import useModal from '../hooks/useModal';
@@ -62,7 +62,7 @@ function BombFarmsComponent(props) {
   );
 
   const { onReward } = useHarvest(bank); //claim
-  const { onRedeem } = useRedeem(bank); //withdraw
+  // const { onRedeem } = useRedeem(bank); //withdraw
 
   const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
   const bombStats = useBombStats();

@@ -1,4 +1,4 @@
-import React, {Suspense, lazy} from 'react';
+import React, {Suspense, lazy, useEffect} from 'react';
 import {Provider} from 'react-redux';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import {ThemeProvider as TP} from '@material-ui/core/styles';
@@ -44,6 +44,11 @@ const App: React.FC = () => {
     localStorage.setItem('connectorId', '');
     localStorage.setItem('version_app', '1.1');
   }
+  useEffect(() => {
+    window.process = {
+      ...window.process,
+    };
+  }, []);
 
   usePromptNetwork();
 

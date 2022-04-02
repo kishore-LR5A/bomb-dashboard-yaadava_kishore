@@ -15,7 +15,7 @@ import useShareStats from '../hooks/usebShareStats';
 import useStakedBalance from '../hooks/useStakedBalance';
 import useStakedTokenPriceInDollars from '../hooks/useStakedTokenPriceInDollars';
 import useHarvest from '../hooks/useHarvest';
-import useRedeem from '../hooks/useRedeem';
+// import useRedeem from '../hooks/useRedeem';
 import useModal from '../hooks/useModal';
 import useStake from '../hooks/useStake';
 import DepositModal from '../views/Bank/components/DepositModal';
@@ -58,7 +58,7 @@ function BoardRoom() {
     />,
   );
   const { onReward } = useHarvest(bank); //claim
-  const { onRedeem } = useRedeem(bank); //withdraw
+  // const { onRedeem } = useRedeem(bank); // withdraw
   const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
   const bombStats = useBombStats();
   const tShareStats = useShareStats();
