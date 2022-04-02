@@ -29,6 +29,7 @@ function BombFarmsComponent(props) {
   // const bankContract = 'BombBtcbLPBShareRewardPool'; // for BOMB-BTCB
   const bankContract = props.bankContract;
   const bank = useBank(bankContract);
+  const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
 
   // deposit
   const { onStake } = useStake(bank);
@@ -82,7 +83,6 @@ function BombFarmsComponent(props) {
   // const totalStaked = useTotalStakedOnBoardroom();
 
   // const tokenBalance = useTokenBalance(bank.depositToken);
-  const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
   const stakedTokenPriceInDollars = useStakedTokenPriceInDollars(bank.depositTokenName, bank.depositToken);
   const tokenPriceInDollarsStake = useMemo(
     () => (stakedTokenPriceInDollars ? stakedTokenPriceInDollars : null),

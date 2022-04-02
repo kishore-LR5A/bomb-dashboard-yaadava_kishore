@@ -32,7 +32,7 @@ function Bonds() {
             <div className="flex space-x-10 justify-center items-center">
               <div className="flex flex-col space-y-1">
                 <p className="text-[16px]">Current Price: (Bomb)^2</p>
-                <p className="font-bold text-[22px]">BBond = {Number(bondStat?.tokenInFtm).toFixed(4) || '-'}</p>
+                <p className="font-bold text-[22px]">BBond = {Number(bondStat?.tokenInFtm).toFixed(4) || '-'}BTCB</p>
               </div>
               <div className="flex flex-col justify-center items-center">
                 <p>Available to redeem:</p>
