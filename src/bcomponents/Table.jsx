@@ -7,13 +7,14 @@ import bomb from '../assets/dashboard_pics/summary/bomb.svg';
 import bshares from '../assets/dashboard_pics/summary/bshares.svg';
 import useBombStats from '../hooks/useBombStats';
 import { roundAndFormatNumber } from '../0x';
-import useBShareSwapperStats from '../hooks/BShareSwapper/useBShareSwapperStats';
+// import useBShareSwapperStats from '../hooks/BShareSwapper/useBShareSwapperStats';
 import useBondStats from '../hooks/useBondStats';
+import usebShareStats from '../../hooks/usebShareStats';
 // import useBondStats from "../hooks/useBondStats";
 
 function Table(props) {
   const bombStats = useBombStats();
-  const bShareStats = useBShareSwapperStats();
+  const bShareStats = usebShareStats();
   const tBondStats = useBondStats();
   const bombPriceInDollars = useMemo(
     () => (bombStats ? Number(bombStats.priceInDollars).toFixed(2) : null),
@@ -36,7 +37,7 @@ function Table(props) {
     () => (tBondStats ? Number(tBondStats.priceInDollars).toFixed(2) : null),
     [tBondStats],
   );
-  
+  ex
   const tBondCirculatingSupply = useMemo(
     () => (tBondStats ? String(tBondStats.circulatingSupply) : null),
     [tBondStats],
