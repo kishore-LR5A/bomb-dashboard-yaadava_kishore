@@ -9,7 +9,7 @@ import useBombStats from '../hooks/useBombStats';
 import { roundAndFormatNumber } from '../0x';
 // import useBShareSwapperStats from '../hooks/BShareSwapper/useBShareSwapperStats';
 import useBondStats from '../hooks/useBondStats';
-import usebShareStats from '../../hooks/usebShareStats';
+import usebShareStats from '../hooks/usebShareStats';
 // import useBondStats from "../hooks/useBondStats";
 
 function Table(props) {
@@ -37,7 +37,6 @@ function Table(props) {
     () => (tBondStats ? Number(tBondStats.priceInDollars).toFixed(2) : null),
     [tBondStats],
   );
-  ex
   const tBondCirculatingSupply = useMemo(
     () => (tBondStats ? String(tBondStats.circulatingSupply) : null),
     [tBondStats],
