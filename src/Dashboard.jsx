@@ -27,6 +27,10 @@ import ProgressCountdown from './views/Boardroom/components/ProgressCountdown';
 import useTreasuryAllocationTimes from './hooks/useTreasuryAllocationTimes';
 // import CountUp from 'react-countup';
 import useCashPriceInEstimatedTWAP from './hooks/useCashPriceInEstimatedTWAP';
+import useWallet from 'use-wallet';
+
+import UnlockWallet from './components/UnlockWallet';
+
 
 const BackgroundImage = createGlobalStyle`
   body {
@@ -37,6 +41,7 @@ const BackgroundImage = createGlobalStyle`
 `;
 
 function Dashboard() {
+  const { account } = useWallet();
   const cashStat = useCashPriceInEstimatedTWAP();
   const scalingFactor = useMemo(() => (cashStat ? Number(cashStat.priceInDollars).toFixed(4) : null), [cashStat]);
   // Tvl value
@@ -47,9 +52,12 @@ function Dashboard() {
     <div>
       <Page>
         <Helmet>
-          <title>Dashboard</title>
+          {/* <title>Dashboard</title> */}
+          <title>bomb.money | Dashboard</title>
         </Helmet>
         <BackgroundImage />
+        {!!account ? (
+        <>
         <div>
           <div className='bg-[url("/background.jpg")] flex flex-col justify-start items-center text-white'>
             {/* section 1: Bomb Finance Summary */}
@@ -151,6 +159,10 @@ function Dashboard() {
             <Bonds />
           </div>
         </div>
+        </>
+      ) : (
+        <UnlockWallet />
+      )}
       </Page>
     </div>
   );
