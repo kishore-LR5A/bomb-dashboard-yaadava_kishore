@@ -24,7 +24,8 @@ import WithdrawModal from '../views/Bank/components/WithdrawModal';
 import useWithdraw from '../hooks/useWithdraw';
 
 function BoardRoom() {
-  const bankContract = 'BombBshareLPBShareRewardPool'; // for BOMB-BSHARE
+  // const bankContract = 'BombBshareLPBShareRewardPool'; // for BOMB-BSHARE
+  const bankContract = 'BombBShareRewardPool'; // for BOMB-BSHARE
   const bank = useBank(bankContract);
   const tokenBalance = useTokenBalance(bank.depositToken);
   const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
