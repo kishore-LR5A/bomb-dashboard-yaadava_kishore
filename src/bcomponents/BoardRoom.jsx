@@ -8,32 +8,35 @@ import useTotalStakedOnBoardroom from '../hooks/useTotalStakedOnBoardroom';
 import { getDisplayBalance } from '../utils/formatBalance';
 import useBank from '../hooks/useBank';
 import useStatsForPool from '../hooks/useStatsForPool';
-import useEarnings from '../hooks/useEarnings';
+// import useEarnings from '../hooks/useEarnings';
 import useBombStats from '../hooks/useBombStats';
 import useShareStats from '../hooks/usebShareStats';
 // import useTokenBalance from '../hooks/useTokenBalance';
-import useStakedBalance from '../hooks/useStakedBalance';
+// import useStakedBalance from '../hooks/useStakedBalance';
 import useStakedTokenPriceInDollars from '../hooks/useStakedTokenPriceInDollars';
-import useHarvest from '../hooks/useHarvest';
+// import useHarvest from '../hooks/useHarvest';
 // import useRedeem from '../hooks/useRedeem';
 import useModal from '../hooks/useModal';
-import useStake from '../hooks/useStake';
+// import useStake from '../hooks/useStake';
 import DepositModal from '../views/Boardroom/components/DepositModal';
 import useTokenBalance from '../hooks/useTokenBalance';
 import WithdrawModal from '../views/Boardroom/components/WithdrawModal';
 // /home/yaadava_kishore/Documents/dyeus/bomb-frontend/src/views/Boardroom/components/DepositModal.tsx
-import useWithdraw from '../hooks/useWithdraw';
+// import useWithdraw from '../hooks/useWithdraw';
 import useHarvestFromBoardroom from '../hooks/useHarvestFromBoardroom';
 import useEarningsOnBoardroom from '../hooks/useEarningsOnBoardroom';
 import useBombFinance from '../hooks/useBombFinance';
 import useWithdrawFromBoardroom from '../hooks/useWithdrawFromBoardroom';
-import useWithdrawCheck from '../hooks/boardroom/useWithdrawCheck';
+// import useWithdrawCheck from '../hooks/boardroom/useWithdrawCheck';
 import useStakeToBoardroom from '../hooks/useStakeToBoardroom';
-import useApprove from '../hooks/useApprove';
+// import useApprove from '../hooks/useApprove';
 import useStakedBalanceOnBoardroom from '../hooks/useStakedBalanceOnBoardroom';
-import useUnstakeTimerBoardroom from '../hooks/boardroom/useUnstakeTimerBoardroom';
+import useBoardroomTVL from '../hooks/useBoardroomTVL';
+// import useUnstakeTimerBoardroom from '../hooks/boardroom/useUnstakeTimerBoardroom';
 
 function BoardRoom() {
+  // boardroom TVL
+  const boardroomTVL = useBoardroomTVL();
   // const bankContract = 'BombBshareLPBShareRewardPool'; // for BOMB-BSHARE
   const bankContract = 'BombBShareRewardPool'; // for BOMB-BSHARE
   const bank = useBank(bankContract);
@@ -43,11 +46,11 @@ function BoardRoom() {
   // deposit
   // const { onStake } = useStake(bank);
   const bombFinance = useBombFinance();
-  const [approveStatus, approve] = useApprove(bombFinance.BSHARE, bombFinance.contracts.Boardroom.address);
+  // const [approveStatus, approve] = useApprove(bombFinance.BSHARE, bombFinance.contracts.Boardroom.address);
 
   const tokenBalance = useTokenBalance(bombFinance.BSHARE);
   const stakedBalance = useStakedBalanceOnBoardroom();
-  const {from, to} = useUnstakeTimerBoardroom();
+  // const {from, to} = useUnstakeTimerBoardroom();
 
   const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('BSHARE', bombFinance.BSHARE);
   const tokenPriceInDollars = useMemo(
@@ -59,9 +62,9 @@ function BoardRoom() {
   );
   // const isOldBoardroomMember = boardroomVersion !== 'latest';
 
-  const {onStake} = useStakeToBoardroom();
-  const {onWithdraw} = useWithdrawFromBoardroom();
-  const canWithdrawFromBoardroom = useWithdrawCheck();
+  const { onStake } = useStakeToBoardroom();
+  const { onWithdraw } = useWithdrawFromBoardroom();
+  // const canWithdrawFromBoardroom = useWithdrawCheck();
 
   const [onPresentDeposit, onDismissDeposit] = useModal(
     <DepositModal
@@ -84,7 +87,6 @@ function BoardRoom() {
       tokenName={'BShare'}
     />,
   );
-
   // const [onPresentDeposit, onDismissDeposit] = useModal(
   //   <DepositModal
   //     max={tokenBalance}
@@ -113,7 +115,7 @@ function BoardRoom() {
   // );
   // const { onReward } = useHarvest(bank); //claim
   // const { onRedeem } = useRedeem(bank); // withdraw
-  const {onReward} = useHarvestFromBoardroom(); //claim rewards
+  const { onReward } = useHarvestFromBoardroom(); //claim rewards
   const earnings = useEarningsOnBoardroom();
 
   // const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
@@ -121,7 +123,7 @@ function BoardRoom() {
   const tShareStats = useShareStats();
 
   // const tokenName = bank.earnTokenName === 'BSHARE' ? 'BSHARE' : 'BOMB';
-  const tokenStats = bank.earnTokenName === 'BSHARE' ? tShareStats : bombStats;
+  // const tokenStats = bank.earnTokenName === 'BSHARE' ? tShareStats : bombStats;
   // const tokenPriceInDollars = useMemo(
   //   () => (tokenStats ? Number(tokenStats.priceInDollars).toFixed(2) : null),
   //   [tokenStats],
@@ -161,7 +163,8 @@ function BoardRoom() {
                 <p>Stake BSHARE and earn BOMB every epoch</p>
               </div>
               <p className="flex items-end">
-                TVL: <span className="text-[16px] font-semibold ">${statsOnPool?.TVL}</span>
+                {/* TVL: <span className="text-[16px] font-semibold ">${statsOnPool?.TVL}</span> */}
+                TVL: <span className="text-[16px] font-semibold ">${boardroomTVL}</span>
               </p>
             </div>
             {/* horizontal line */}
