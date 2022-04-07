@@ -116,7 +116,7 @@ function Dashboard() {
                       TVL:{' '}
                       <span className="text-green-500 font-semibold text-[14px]">
                         {/* <CountUp style={{ fontSize: '25px' }} end={TVL} separator="," prefix="$" /> */}
-                        ${TVL}
+                        ${TVL.toFixed(2)}
                       </span>
                     </p>
                     <p className="text-[14px]">

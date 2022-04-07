@@ -32,11 +32,14 @@ import useStakeToBoardroom from '../hooks/useStakeToBoardroom';
 // import useApprove from '../hooks/useApprove';
 import useStakedBalanceOnBoardroom from '../hooks/useStakedBalanceOnBoardroom';
 import useBoardroomTVL from '../hooks/useBoardroomTVL';
+import useBoardroomAPR from '../hooks/useBoardroomAPR';
 // import useUnstakeTimerBoardroom from '../hooks/boardroom/useUnstakeTimerBoardroom';
 
 function BoardRoom() {
   // boardroom TVL
   const boardroomTVL = useBoardroomTVL();
+  // boardroom APR
+  const boardroomAPR = useBoardroomAPR();
   // const bankContract = 'BombBshareLPBShareRewardPool'; // for BOMB-BSHARE
   const bankContract = 'BombBShareRewardPool'; // for BOMB-BSHARE
   const bank = useBank(bankContract);
@@ -163,8 +166,8 @@ function BoardRoom() {
                 <p>Stake BSHARE and earn BOMB every epoch</p>
               </div>
               <p className="flex items-end">
-                {/* TVL: <span className="text-[16px] font-semibold ">${statsOnPool?.TVL}</span> */}
-                TVL: <span className="text-[16px] font-semibold ">${boardroomTVL}</span>
+                TVL: <span className="text-[16px] font-semibold ">${statsOnPool?.TVL}</span>
+                {/* TVL: <span className="text-[16px] font-semibold ">${boardroomTVL.toFixed(2)}</span> */}
               </p>
             </div>
             {/* horizontal line */}
@@ -187,6 +190,7 @@ function BoardRoom() {
           <div className="flex flex-col space-y-1">
             <p>Daily Returns:</p>
             <p>{bank.closedForStaking ? '0.00' : statsOnPool?.dailyAPR}%</p>
+            <p>{bank.closedForStaking ? '0.00' : boardroomAPR.toFixed(2)}%</p>
           </div>
           {/* stake */}
           <div className="flex flex-col space-y-1">
