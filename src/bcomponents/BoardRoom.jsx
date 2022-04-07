@@ -18,58 +18,114 @@ import useHarvest from '../hooks/useHarvest';
 // import useRedeem from '../hooks/useRedeem';
 import useModal from '../hooks/useModal';
 import useStake from '../hooks/useStake';
-import DepositModal from '../views/Bank/components/DepositModal';
+import DepositModal from '../views/Boardroom/components/DepositModal';
 import useTokenBalance from '../hooks/useTokenBalance';
-import WithdrawModal from '../views/Bank/components/WithdrawModal';
+import WithdrawModal from '../views/Boardroom/components/WithdrawModal';
+// /home/yaadava_kishore/Documents/dyeus/bomb-frontend/src/views/Boardroom/components/DepositModal.tsx
 import useWithdraw from '../hooks/useWithdraw';
+import useHarvestFromBoardroom from '../hooks/useHarvestFromBoardroom';
+import useEarningsOnBoardroom from '../hooks/useEarningsOnBoardroom';
+import useBombFinance from '../hooks/useBombFinance';
+import useWithdrawFromBoardroom from '../hooks/useWithdrawFromBoardroom';
+import useWithdrawCheck from '../hooks/boardroom/useWithdrawCheck';
+import useStakeToBoardroom from '../hooks/useStakeToBoardroom';
+import useApprove from '../hooks/useApprove';
+import useStakedBalanceOnBoardroom from '../hooks/useStakedBalanceOnBoardroom';
+import useUnstakeTimerBoardroom from '../hooks/boardroom/useUnstakeTimerBoardroom';
 
 function BoardRoom() {
   // const bankContract = 'BombBshareLPBShareRewardPool'; // for BOMB-BSHARE
   const bankContract = 'BombBShareRewardPool'; // for BOMB-BSHARE
   const bank = useBank(bankContract);
-  const tokenBalance = useTokenBalance(bank.depositToken);
-  const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
+  // const tokenBalance = useTokenBalance(bank.depositToken);
+  // const stakedBalance = useStakedBalance(bank.contract, bank.poolId);
 
   // deposit
-  const { onStake } = useStake(bank);
+  // const { onStake } = useStake(bank);
+  const bombFinance = useBombFinance();
+  const [approveStatus, approve] = useApprove(bombFinance.BSHARE, bombFinance.contracts.Boardroom.address);
+
+  const tokenBalance = useTokenBalance(bombFinance.BSHARE);
+  const stakedBalance = useStakedBalanceOnBoardroom();
+  const {from, to} = useUnstakeTimerBoardroom();
+
+  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars('BSHARE', bombFinance.BSHARE);
+  const tokenPriceInDollars = useMemo(
+    () =>
+      stakedTokenPriceInDollars
+        ? (Number(stakedTokenPriceInDollars) * Number(getDisplayBalance(stakedBalance))).toFixed(2).toString()
+        : null,
+    [stakedTokenPriceInDollars, stakedBalance],
+  );
+  // const isOldBoardroomMember = boardroomVersion !== 'latest';
+
+  const {onStake} = useStakeToBoardroom();
+  const {onWithdraw} = useWithdrawFromBoardroom();
+  const canWithdrawFromBoardroom = useWithdrawCheck();
+
   const [onPresentDeposit, onDismissDeposit] = useModal(
     <DepositModal
       max={tokenBalance}
-      decimals={bank.depositToken.decimal}
-      onConfirm={(amount) => {
-        if (Number(amount) <= 0 || isNaN(Number(amount))) return;
-        onStake(amount);
+      onConfirm={(value) => {
+        onStake(value);
         onDismissDeposit();
       }}
-      tokenName={bank.depositTokenName}
+      tokenName={'BShare'}
     />,
   );
-  // withdraw
-  const { onWithdraw } = useWithdraw(bank);
+
   const [onPresentWithdraw, onDismissWithdraw] = useModal(
     <WithdrawModal
       max={stakedBalance}
-      decimals={bank.depositToken.decimal}
-      onConfirm={(amount) => {
-        if (Number(amount) <= 0 || isNaN(Number(amount))) return;
-        onWithdraw(amount);
+      onConfirm={(value) => {
+        onWithdraw(value);
         onDismissWithdraw();
       }}
-      tokenName={bank.depositTokenName}
+      tokenName={'BShare'}
     />,
   );
-  const { onReward } = useHarvest(bank); //claim
+
+  // const [onPresentDeposit, onDismissDeposit] = useModal(
+  //   <DepositModal
+  //     max={tokenBalance}
+  //     decimals={bank.depositToken.decimal}
+  //     onConfirm={(amount) => {
+  //       if (Number(amount) <= 0 || isNaN(Number(amount))) return;
+  //       onStake(amount);
+  //       onDismissDeposit();
+  //     }}
+  //     tokenName={bank.depositTokenName}
+  //   />,
+  // );
+  // // withdraw
+  // const { onWithdraw } = useWithdraw(bank);
+  // const [onPresentWithdraw, onDismissWithdraw] = useModal(
+  //   <WithdrawModal
+  //     max={stakedBalance}
+  //     decimals={bank.depositToken.decimal}
+  //     onConfirm={(amount) => {
+  //       if (Number(amount) <= 0 || isNaN(Number(amount))) return;
+  //       onWithdraw(amount);
+  //       onDismissWithdraw();
+  //     }}
+  //     tokenName={bank.depositTokenName}
+  //   />,
+  // );
+  // const { onReward } = useHarvest(bank); //claim
   // const { onRedeem } = useRedeem(bank); // withdraw
-  const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
+  const {onReward} = useHarvestFromBoardroom(); //claim rewards
+  const earnings = useEarningsOnBoardroom();
+
+  // const earnings = useEarnings(bank.contract, bank.earnTokenName, bank.poolId);
   const bombStats = useBombStats();
   const tShareStats = useShareStats();
 
   // const tokenName = bank.earnTokenName === 'BSHARE' ? 'BSHARE' : 'BOMB';
   const tokenStats = bank.earnTokenName === 'BSHARE' ? tShareStats : bombStats;
-  const tokenPriceInDollars = useMemo(
-    () => (tokenStats ? Number(tokenStats.priceInDollars).toFixed(2) : null),
-    [tokenStats],
-  );
+  // const tokenPriceInDollars = useMemo(
+  //   () => (tokenStats ? Number(tokenStats.priceInDollars).toFixed(2) : null),
+  //   [tokenStats],
+  // );
 
   const earnedInDollars = (Number(tokenPriceInDollars) * Number(getDisplayBalance(earnings))).toFixed(2);
   // const { account } = useWallet();
@@ -79,7 +135,7 @@ function BoardRoom() {
   const totalStaked = useTotalStakedOnBoardroom();
 
   // const tokenBalance = useTokenBalance(bank.depositToken);
-  const stakedTokenPriceInDollars = useStakedTokenPriceInDollars(bank.depositTokenName, bank.depositToken);
+  // const stakedTokenPriceInDollars = useStakedTokenPriceInDollars(bank.depositTokenName, bank.depositToken);
   const tokenPriceInDollarsStake = useMemo(
     () => (stakedTokenPriceInDollars ? stakedTokenPriceInDollars : null),
     [stakedTokenPriceInDollars],
